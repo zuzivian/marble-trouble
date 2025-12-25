@@ -1,0 +1,5 @@
+{
+  "name": "Marble Trouble",
+  "description": "A passive collection game inspired by MouseHunt and Mafia Wars. Catch unique, procedurally generated marbles every 5 minutes, upgrade your workshop, and build the ultimate collection.",
+  "requestFramePermissions": []
+}
