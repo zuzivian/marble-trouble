@@ -7,8 +7,23 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Debug: git info
+        run: |
+          git --version
+          git remote -v || true
+          git status --porcelain || true
+      - name: Configure git for actions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -21,5 +36,9 @@ jobs:
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # If your repo prevents GITHUB_TOKEN from pushing, create a PAT (repo scope)
+          # and set it as the repository secret `GH_PAGES_TOKEN`, then the action
+          # will use it via `personal_token` below.
+          personal_token: ${{ secrets.GH_PAGES_TOKEN }}
+          publish_branch: gh-pages
           publish_dir: ./dist
