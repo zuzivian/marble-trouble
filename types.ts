@@ -20,23 +20,50 @@ export interface Marble {
   visualType: 'solid' | 'swirl' | 'clear' | 'sparkle' | 'metallic';
 }
 
-export interface WorkshopUpgrade {
+export interface DiaryEntry {
+  id: string;
+  timestamp: number;
+  message: string;
+  type: 'catch' | 'sell' | 'upgrade' | 'system';
+  icon: string;
+}
+
+export interface MarbleTemplate extends Omit<Marble, 'id' | 'caughtAt'> {}
+
+export interface Jar {
+  id: string;
+  name: string;
+  description: string;
+  capacity: number;
+  luckBonus: number;
+  yieldMultiplier: number;
+  icon: string;
+  cost: number;
+}
+
+export interface Cover {
   id: string;
   name: string;
   description: string;
   cost: number;
-  level: number;
-  maxLevel: number;
-  effectType: 'cooldown' | 'luck' | 'value' | 'capacity';
+  effectType: 'luck' | 'value' | 'hybrid';
+  luckValue: number;
+  yieldValue: number;
 }
 
 export interface GameState {
-  marbles: Marble[];
+  version: number;
+  hasCompletedOnboarding: boolean;
+  onboardingStep: number;
+  jarContents: Record<string, Marble[]>;
+  activeCoverId: string | null;
+  ownedCoverIds: string[];
   currency: number;
   lastCatchTimestamp: number;
-  upgrades: Record<string, number>;
+  catchHistory: Record<string, number>;
   totalCatches: number;
   username: string;
+  activeJarId: string;
+  ownedJarIds: string[];
+  diaryEntries: DiaryEntry[];
 }
-
-export const COOLDOWN_TIME = 1; // 1 second for dev purposes
