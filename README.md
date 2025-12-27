@@ -94,3 +94,5 @@ Marble Trouble is now a production-ready, atmospheric idle RPG. It successfully 
 Developed by Nathaniel Wong. 
 Backdrops provided via high-quality illustrative placeholders to signify the diverse provinces of the Tang Dynasty.
 *For the Glory of the Emperor.*
+
+<!-- ci: trigger redeploy -->
