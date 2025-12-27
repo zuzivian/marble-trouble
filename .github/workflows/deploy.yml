@@ -33,12 +33,23 @@ jobs:
         run: npm run build
       - name: Copy index to 404 (SPA fallback)
         run: cp dist/index.html dist/404.html || true
+      - name: "Check deploy credentials"
+        run: |
+          # Ensure we have a token to push gh-pages. Either a repo secret `GH_PAGES_TOKEN`
+          # (recommended) or the built-in GITHUB_TOKEN (must have 'pages: write' permission)
+          if [ -z "${{ secrets.GH_PAGES_TOKEN }}" ] && [ -z "${{ secrets.GITHUB_TOKEN }}" ]; then
+            echo "ERROR: no deploy token found (set GH_PAGES_TOKEN secret or enable GITHUB_TOKEN write)." >&2
+            exit 1
+          fi
+
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          # If your repo prevents GITHUB_TOKEN from pushing, create a PAT (repo scope)
-          # and set it as the repository secret `GH_PAGES_TOKEN`, then the action
-          # will use it via `personal_token` below.
+          # Preference: use a personal PAT set as `GH_PAGES_TOKEN` (recommended)
+          # Fallback: action also accepts `github_token` if organization/repo allows it.
           personal_token: ${{ secrets.GH_PAGES_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./dist
+          # Optional: keep files from previous publish (false by default)
+          # keep_files: false
