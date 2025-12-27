@@ -8,6 +8,14 @@ export enum Rarity {
   MYTHIC = 'Mythic'
 }
 
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  condition: (state: GameState) => boolean;
+}
+
 export interface Marble {
   id: string;
   name: string;
@@ -18,6 +26,7 @@ export interface Marble {
   value: number;
   caughtAt: number;
   visualType: 'solid' | 'swirl' | 'clear' | 'sparkle' | 'metallic';
+  locations?: string[];
 }
 
 export interface DiaryEntry {
@@ -51,6 +60,15 @@ export interface Cover {
   yieldValue: number;
 }
 
+export interface Location {
+  id: string;
+  name: string;
+  description: string;
+  minRank: number;
+  travelCost: number;
+  icon: string;
+}
+
 export interface GameState {
   version: number;
   hasCompletedOnboarding: boolean;
@@ -59,6 +77,7 @@ export interface GameState {
   activeCoverId: string | null;
   ownedCoverIds: string[];
   currency: number;
+  xp: number;
   lastCatchTimestamp: number;
   catchHistory: Record<string, number>;
   totalCatches: number;
@@ -67,4 +86,8 @@ export interface GameState {
   ownedJarIds: string[];
   diaryEntries: DiaryEntry[];
   seenTooltips: string[];
+  unlockedAchievementIds: string[];
+  currentLocationId: string;
+  visitedLocationIds: string[]; // New: Track locations visited
+  hasTriggeredResonance: boolean; // New: Track if player ever sold a full jar
 }

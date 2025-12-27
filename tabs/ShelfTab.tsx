@@ -16,7 +16,7 @@ const ShelfTab: React.FC = () => {
     <div className="flex flex-col h-full overflow-hidden px-2">
       <div className="flex flex-col items-center mb-6 md:mb-10 shrink-0 pt-4 relative">
         <h2 ref={titleRef} className="text-2xl md:text-5xl font-outfit font-black tracking-tighter uppercase text-slate-100">{UI_SHELF.TITLE}</h2>
-        <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full mt-2" />
+        <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-transparent rounded-full mt-2" />
         
         {showExplanation && (
           <MasterTooltip 
@@ -36,18 +36,18 @@ const ShelfTab: React.FC = () => {
           const isActive = gameState.activeJarId === jarId;
           
           return (
-            <div key={jarId} className={`glass-premium p-6 md:p-10 rounded-[2.5rem] border transition-all duration-500 ${isActive ? 'border-blue-500/40 ring-1 ring-blue-500/20' : 'border-white/5 opacity-80 hover:opacity-100'}`}>
+            <div key={jarId} className={`glass-premium p-6 md:p-10 rounded-[2.5rem] border transition-all duration-500 ${isActive ? 'border-amber-500/40 ring-1 ring-amber-500/20' : 'border-white/5 opacity-80 hover:opacity-100'}`}>
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                 <div className="flex items-center space-x-6">
-                  <div className={`w-16 h-16 md:w-24 md:h-24 rounded-3xl flex items-center justify-center text-4xl md:text-6xl shadow-inner border transition-all ${isActive ? 'bg-blue-500/10 border-blue-500/20' : 'bg-black/20 border-white/5'}`}>
+                  <div className={`w-16 h-16 md:w-24 md:h-24 rounded-3xl flex items-center justify-center text-4xl md:text-6xl shadow-inner border transition-all ${isActive ? 'bg-amber-500/10 border-amber-500/20' : 'bg-black/20 border-white/5'}`}>
                     {jar.icon}
                   </div>
                   <div>
                     <h3 className="text-lg md:text-3xl font-black font-outfit uppercase tracking-tight text-slate-100">{jar.name}</h3>
                     <div className="flex items-center space-x-3 mt-1">
-                      <span className="text-[10px] md:text-xs font-black text-blue-400 uppercase tracking-widest">{contents.length} / {jar.capacity} Specimens</span>
+                      <span className="text-[10px] md:text-xs font-black text-amber-400 uppercase tracking-widest">{contents.length} / {jar.capacity} Specimens</span>
                       {isActive && (
-                        <span className="text-[8px] md:text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Active Vessel</span>
+                        <span className="text-[8px] md:text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Active Vessel</span>
                       )}
                     </div>
                   </div>
@@ -57,7 +57,7 @@ const ShelfTab: React.FC = () => {
                   {!isActive && (
                     <button 
                       onClick={() => equipJar(jarId)} 
-                      className="flex-1 md:flex-none px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-blue-900/20"
+                      className="flex-1 md:flex-none px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-amber-900/20"
                     >
                       {UI_COMMON.EQUIP}
                     </button>
@@ -67,7 +67,7 @@ const ShelfTab: React.FC = () => {
                     disabled={contents.length === 0} 
                     className="flex-1 md:flex-none px-6 py-3 bg-white/5 hover:bg-white/10 text-slate-300 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all active:scale-95 disabled:opacity-20 border border-white/10"
                   >
-                    Recycle All
+                    {UI_SHELF.RELINQUISH}
                   </button>
                 </div>
               </div>
@@ -101,4 +101,5 @@ const ShelfTab: React.FC = () => {
   );
 };
 
+// Fixed: Added default export to the component
 export default ShelfTab;

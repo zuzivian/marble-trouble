@@ -6,12 +6,14 @@ import HomeTab from './tabs/HomeTab';
 import ShelfTab from './tabs/ShelfTab';
 import ShopTab from './tabs/ShopTab';
 import AlbumTab from './tabs/AlbumTab';
+import SettingsTab from './tabs/SettingsTab';
+import AchievementsTab from './tabs/AchievementsTab';
+import TravelTab from './tabs/TravelTab';
 import Onboarding from './components/Onboarding';
 
 const TabSwitcher: React.FC = () => {
   const { activeTab, gameState } = useGame();
 
-  // Fullscreen onboarding only for early steps
   if (!gameState.hasCompletedOnboarding && gameState.onboardingStep <= 3) {
     return <Onboarding />;
   }
@@ -21,6 +23,9 @@ const TabSwitcher: React.FC = () => {
     case 'jar': return <ShelfTab />;
     case 'shop': return <ShopTab />;
     case 'album': return <AlbumTab />;
+    case 'settings': return <SettingsTab />;
+    case 'achievements': return <AchievementsTab />;
+    case 'travel': return <TravelTab />;
     default: return null;
   }
 };

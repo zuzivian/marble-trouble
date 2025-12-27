@@ -76,10 +76,10 @@ const MasterTooltip: React.FC<Props> = ({ message, position, className = "", wid
   }, [anchorRef, position]);
 
   const arrowStyles = {
-    top: 'bottom-[-8px] left-1/2 -translate-x-1/2 border-t-blue-500',
-    bottom: 'top-[-8px] left-1/2 -translate-x-1/2 border-b-blue-500',
-    left: 'right-[-8px] top-1/2 -translate-y-1/2 border-l-blue-500',
-    right: 'left-[-8px] top-1/2 -translate-y-1/2 border-r-blue-500',
+    top: 'bottom-[-8px] left-1/2 -translate-x-1/2 border-t-amber-500',
+    bottom: 'top-[-8px] left-1/2 -translate-x-1/2 border-b-amber-500',
+    left: 'right-[-8px] top-1/2 -translate-y-1/2 border-l-amber-500',
+    right: 'left-[-8px] top-1/2 -translate-y-1/2 border-r-amber-500',
   };
 
   const transformClass = {
@@ -108,13 +108,13 @@ const MasterTooltip: React.FC<Props> = ({ message, position, className = "", wid
       className={`pointer-events-none transform-gpu ${transformClass} ${className}`}
     >
       <div className="animate-float">
-        <div className={`relative bg-slate-900 px-8 py-3 md:px-12 md:py-4 rounded-[2rem] border-2 border-blue-500 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(37,99,235,0.4)] ${maxWidthClass} ring-1 ring-white/10 flex flex-col items-center`}>
+        <div className={`relative bg-[#2d0505] px-8 py-3 md:px-12 md:py-4 rounded-[2rem] border-2 border-amber-500 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(251,191,36,0.2)] ${maxWidthClass} ring-1 ring-amber-500/20 flex flex-col items-center`}>
           {/* Avatar Head */}
-          <div className="absolute -top-6 -left-10 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-600 to-indigo-900 border-2 border-white/30 rounded-full flex items-center justify-center text-3xl md:text-4xl shadow-2xl z-20">
+          <div className="absolute -top-6 -left-10 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-red-700 to-amber-900 border-2 border-amber-400 rounded-full flex items-center justify-center text-3xl md:text-4xl shadow-2xl z-20">
             🧙‍♂️
           </div>
 
-          <p className="text-[12px] md:text-[15px] font-black text-white uppercase tracking-tight leading-snug italic drop-shadow-sm text-center">
+          <p className="text-[12px] md:text-[15px] font-black text-amber-100 uppercase tracking-tight leading-snug italic drop-shadow-sm text-center">
             "{message}"
           </p>
           
@@ -124,7 +124,7 @@ const MasterTooltip: React.FC<Props> = ({ message, position, className = "", wid
                 e.stopPropagation();
                 onOk();
               }}
-              className="mt-3 px-10 py-2 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-black uppercase tracking-widest rounded-xl transition-all pointer-events-auto active:scale-95 shadow-lg border border-white/20"
+              className="mt-3 px-10 py-2 bg-amber-600 hover:bg-amber-500 text-white text-[11px] font-black uppercase tracking-widest rounded-xl transition-all pointer-events-auto active:scale-95 shadow-lg border border-amber-400/30"
             >
               OK
             </button>

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { DiaryEntry } from '../types';
-import { UI_COMMON } from '../data/uiTexts';
+import { UI_COMMON, UI_MODAL } from '../data/uiTexts';
 
 interface Props {
   isOpen: boolean;
@@ -64,8 +64,8 @@ const DiaryModal: React.FC<Props> = ({ isOpen, onClose, entries }) => {
         {/* Header - Tighter padding */}
         <div className="p-5 md:p-6 border-b border-white/10 flex items-center justify-between relative z-10 shrink-0">
           <div className="flex flex-col">
-            <span className="text-[9px] font-black text-blue-400 uppercase tracking-[0.4em] mb-0.5">Archival Records</span>
-            <h2 className="text-lg md:text-2xl font-outfit font-black tracking-tighter uppercase text-slate-100 leading-none">Glazier's Log</h2>
+            <span className="text-[9px] font-black text-blue-400 uppercase tracking-[0.4em] mb-0.5">{UI_MODAL.DIARY_SUBTITLE}</span>
+            <h2 className="text-lg md:text-2xl font-outfit font-black tracking-tighter uppercase text-slate-100 leading-none">{UI_MODAL.DIARY_LOG_NAME}</h2>
           </div>
           <button 
             onClick={onClose}
@@ -120,7 +120,7 @@ const DiaryModal: React.FC<Props> = ({ isOpen, onClose, entries }) => {
            </button>
            
            <div className="flex flex-col items-center">
-             <span className="text-[7px] font-black text-slate-600 uppercase tracking-tighter leading-none mb-0.5">Records Page</span>
+             <span className="text-[7px] font-black text-slate-600 uppercase tracking-tighter leading-none mb-0.5">Ledger Page</span>
              <span className="text-[10px] md:text-xs font-black text-slate-100">{page + 1} / {Math.max(1, totalPages)}</span>
            </div>
 

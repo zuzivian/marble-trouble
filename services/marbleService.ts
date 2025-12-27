@@ -4,26 +4,16 @@ import { MARBLE_DATABASE } from '../data/marbles';
 import { RARITY_WEIGHTS, MIN_COMMON_WEIGHT } from '../data/config';
 
 /**
- * Roll for a new marble based on current luck (Attraction) modifiers.
- * Attraction displaces Common weight and distributes it to higher tiers
- * with an exponential bias towards the rarest specimens.
+ * Roll for a new marble based on current luck (Attraction) modifiers and location.
  */
-export const rollFromDatabase = (luckModifier: number): Marble => {
-  // 1. Calculate how much Common weight is displaced
-  const commonWeight = RARITY_WEIGHTS[0].weight; // Usually 60
+export const rollFromDatabase = (luckModifier: number, locationId: string): Marble => {
+  const commonWeight = RARITY_WEIGHTS[0].weight;
   const displacement = Math.min(commonWeight - MIN_COMMON_WEIGHT, luckModifier * 1.2);
   
-  // 2. Distribute displaced weight to other tiers
-  // We use a power factor so higher index rarities (Mythic/Legendary) get more of the luck "slice"
   const totalPower = RARITY_WEIGHTS.slice(1).reduce((acc, _, i) => acc + Math.pow(1.5, i), 0);
 
   const adjustedWeights = RARITY_WEIGHTS.map((r, i) => {
-    if (i === 0) {
-      // The Common bucket
-      return commonWeight - displacement;
-    }
-    
-    // Non-common buckets receive a share of the displacement
+    if (i === 0) return commonWeight - displacement;
     const tierPower = Math.pow(1.5, i - 1);
     const bonus = (displacement * (tierPower / totalPower));
     return r.weight + bonus;
@@ -41,8 +31,18 @@ export const rollFromDatabase = (luckModifier: number): Marble => {
     random -= adjustedWeights[i];
   }
 
-  const pool = MARBLE_DATABASE.filter(m => m.rarity === selectedRarity);
-  const template = pool[Math.floor(Math.random() * pool.length)] || MARBLE_DATABASE[0];
+  // Filter pool by rarity AND location
+  const pool = MARBLE_DATABASE.filter(m => 
+    m.rarity === selectedRarity && 
+    (m.locations ? m.locations.includes(locationId) : true)
+  );
+  
+  // Fallback if no marble of that rarity exists in this location
+  const fallbackPool = pool.length > 0 ? pool : MARBLE_DATABASE.filter(m => 
+    (m.locations ? m.locations.includes(locationId) : true)
+  );
+  
+  const template = fallbackPool[Math.floor(Math.random() * fallbackPool.length)] || MARBLE_DATABASE[0];
 
   return {
     ...template,

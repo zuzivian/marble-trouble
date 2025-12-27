@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { Marble, MarbleTemplate } from '../types';
 import { MARBLE_DATABASE } from '../data/marbles';
+import { LOCATIONS } from '../data/config';
 import { RARITY_COLORS } from '../data/constants';
 import { useGame } from '../context/GameContext';
 import { UI_ALBUM, UI_ONBOARDING } from '../data/uiTexts';
@@ -36,40 +37,49 @@ const AlbumTab: React.FC = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar pb-32">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5 max-w-5xl mx-auto px-2">
-          {MARBLE_DATABASE.map(template => {
-            const count = gameState.catchHistory[template.name] || 0;
-            const isCaught = count > 0;
+        <div className="max-w-5xl mx-auto space-y-12">
+          {LOCATIONS.map(location => {
+            const locationMarbles = MARBLE_DATABASE.filter(m => m.locations?.includes(location.id));
+            if (locationMarbles.length === 0) return null;
+
             return (
-              <button 
-                key={template.name} 
-                onClick={() => setSelectedTemplate(template)}
-                className={`group glass-premium p-4 md:p-6 rounded-3xl flex flex-col items-center space-y-3 md:space-y-4 border transition-all duration-300 hover:scale-105 active:scale-95 ${
-                  isCaught ? 'border-white/5 bg-white/5 hover:border-blue-500/30' : 'border-dashed border-white/5 grayscale opacity-40 hover:opacity-60'
-                }`}
-              >
-                <div className="relative">
-                  <div className="absolute -inset-4 bg-white/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <MarbleVisual marble={template as Marble} size="md" isSilhouette={!isCaught} />
+              <div key={location.id} className="space-y-6">
+                <div className="flex items-center space-x-4 px-2">
+                  <span className="text-3xl">{location.icon}</span>
+                  <div>
+                    <h3 className="text-xl font-black font-outfit uppercase text-slate-100 tracking-tight leading-none">{location.name}</h3>
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">Archive Segment</p>
+                  </div>
                 </div>
-                
-                <div className="text-center w-full">
-                  <p className={`text-[7px] md:text-[9px] font-black uppercase tracking-widest mb-1 ${isCaught ? RARITY_COLORS[template.rarity] : 'text-slate-700'}`}>
-                    {template.rarity}
-                  </p>
-                  <h3 className="font-black text-[10px] md:text-sm tracking-tight text-slate-200 uppercase truncate px-1">
-                    {isCaught ? template.name : UI_ALBUM.UNKNOWN}
-                  </h3>
-                  
-                  {isCaught && (
-                    <div className="mt-2 py-1 px-2 bg-white/5 rounded-xl border border-white/5">
-                      <p className="text-[8px] font-black text-slate-500 uppercase tracking-tighter">
-                        Collected: <span className="text-blue-400">{count}</span>
-                      </p>
-                    </div>
-                  )}
+
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-4 px-2">
+                  {locationMarbles.map(template => {
+                    const count = gameState.catchHistory[template.name] || 0;
+                    const isCaught = count > 0;
+                    return (
+                      <button 
+                        key={`${location.id}-${template.name}`} 
+                        onClick={() => setSelectedTemplate(template)}
+                        className={`group glass p-2 md:p-3 rounded-2xl flex flex-col items-center space-y-2 border transition-all duration-300 hover:scale-105 active:scale-95 ${
+                          isCaught ? 'border-white/5 bg-white/5 hover:border-blue-500/30' : 'border-dashed border-white/5 grayscale opacity-40 hover:opacity-60'
+                        }`}
+                      >
+                        <div className="relative">
+                          <div className="scale-75 md:scale-90 drop-shadow-md">
+                            <MarbleVisual marble={template as Marble} size="sm" isSilhouette={!isCaught} />
+                          </div>
+                        </div>
+                        
+                        <div className="text-center w-full">
+                          <h3 className="font-black text-[7px] md:text-[9px] tracking-tight text-slate-200 uppercase truncate px-1">
+                            {isCaught ? template.name : UI_ALBUM.UNKNOWN}
+                          </h3>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>

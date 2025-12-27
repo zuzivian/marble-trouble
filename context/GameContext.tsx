@@ -7,8 +7,10 @@ interface GameContextType {
   gameState: GameState;
   timeLeft: number;
   isCatching: boolean;
+  // Fix: Added missing lastCaught property to match useGameState return value
   lastCaught: Marble | null;
-  clearLastCaught: () => void;
+  lastOutcome: { type: 'catch' | 'escape'; marble: Marble } | null;
+  clearLastOutcome: () => void;
   advice: string;
   activeJar: Jar;
   activeMarbles: Marble[];
@@ -16,8 +18,8 @@ interface GameContextType {
   isJarFull: boolean;
   totalLuck: number;
   totalYield: number;
-  activeTab: 'home' | 'jar' | 'album' | 'shop';
-  setActiveTab: (tab: 'home' | 'jar' | 'album' | 'shop') => void;
+  activeTab: 'home' | 'jar' | 'album' | 'shop' | 'settings' | 'achievements' | 'travel';
+  setActiveTab: (tab: 'home' | 'jar' | 'album' | 'shop' | 'settings' | 'achievements' | 'travel') => void;
   handleCatch: () => Promise<void>;
   completeOnboarding: (jarId: string) => void;
   advanceOnboarding: (toStep?: number) => void;
@@ -27,13 +29,18 @@ interface GameContextType {
   equipCover: (coverId: string) => void;
   equipJar: (jarId: string) => void;
   markTooltipSeen: (id: string) => void;
+  resetGame: () => void;
+  rankCelebration: { rank: number; name: string } | null;
+  clearRankCelebration: () => void;
+  travelToLocation: (locationId: string) => void;
+  resetCooldown: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const gameLogic = useGameState();
-  const [activeTab, setActiveTab] = useState<'home' | 'jar' | 'album' | 'shop'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'jar' | 'album' | 'shop' | 'settings' | 'achievements' | 'travel'>('home');
 
   return (
     <GameContext.Provider value={{ ...gameLogic, activeTab, setActiveTab }}>

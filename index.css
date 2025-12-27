@@ -1,8 +1,9 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #1a0505; /* Deep Lacquer Red/Black */
-    color: #fef3c7; /* Soft Parchment */
+    /* Imperial Night Black - slightly lightened for contrast */
+    background-color: #0c0202; 
+    color: #fff7ed; 
     overflow: hidden;
     height: 100vh;
     width: 100vw;
@@ -13,16 +14,33 @@ body {
 }
 
 .glass {
-    background: rgba(45, 10, 10, 0.7); /* Deep Crimson Glass */
+    /* lightened background for better contrast */
+    background: rgba(40, 10, 10, 0.75); 
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(251, 191, 36, 0.15); /* Gold Filigree Border */
+    border: 1px solid rgba(251, 191, 36, 0.3); 
 }
 
 .glass-premium {
-    background: linear-gradient(135deg, rgba(69, 10, 10, 0.9) 0%, rgba(26, 5, 5, 0.95) 100%);
+    /* Increased transparency to 50% as requested */
+    background: linear-gradient(135deg, rgba(60, 10, 10, 0.5) 0%, rgba(20, 5, 5, 0.5) 100%);
     backdrop-filter: blur(32px);
-    border: 1px solid rgba(251, 191, 36, 0.3);
-    box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(251, 191, 36, 0.05);
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(251, 191, 36, 0.15);
+}
+
+/* Chinese Cloud Pattern Overlay */
+.bg-clouds {
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 50 C 10 30 40 30 40 45 C 40 35 70 35 70 50 C 70 65 10 65 10 50' fill='none' stroke='rgba(251,191,36,0.1)' stroke-width='1.5'/%3E%3C/svg%3E");
+}
+
+@keyframes fireworks {
+    0% { transform: scale(0); opacity: 1; }
+    50% { opacity: 1; }
+    100% { transform: scale(4); opacity: 0; }
+}
+
+.animate-fireworks {
+    animation: fireworks 1.5s ease-out forwards;
 }
 
 @keyframes shimmer {
@@ -51,12 +69,12 @@ body {
 
 @keyframes pulse-alive {
     0%, 100% { transform: scale(1); filter: brightness(1); }
-    50% { transform: scale(1.03); filter: brightness(1.2) drop-shadow(0 0 10px rgba(251, 191, 36, 0.3)); }
+    50% { transform: scale(1.03); filter: brightness(1.3) drop-shadow(0 0 12px rgba(251, 191, 36, 0.4)); }
 }
 
 @keyframes furnace-glow {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.1); filter: blur(40px); }
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); filter: blur(40px); }
 }
 
 @keyframes text-reveal {
@@ -94,18 +112,18 @@ body {
 
 /* Custom scrollbar - Lacquered feel */
 .custom-scrollbar::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.6);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #78350f; /* Amber/Wood */
+    background: #b45309; 
     border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #92400e;
+    background: #d97706;
 }

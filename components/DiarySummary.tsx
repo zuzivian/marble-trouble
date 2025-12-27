@@ -44,7 +44,7 @@ const DiarySummary: React.FC<Props> = ({ entries }) => {
           <div className="flex items-center gap-3 overflow-hidden">
             <span className="text-xl shrink-0 group-hover:scale-125 transition-transform">{latest.icon}</span>
             <div className="flex flex-col min-w-0">
-              <span className="text-[8px] font-black uppercase text-slate-500 tracking-widest leading-none mb-1">Workshop Log — {formatDate(latest.timestamp)}</span>
+              <span className="text-[8px] font-black uppercase text-slate-500 tracking-widest leading-none mb-1">Scrolls of the Rites — {formatDate(latest.timestamp)}</span>
               <p className="text-[10px] md:text-sm font-medium text-slate-300 truncate tracking-tight italic">
                 "{latest.message}"
               </p>
@@ -53,7 +53,7 @@ const DiarySummary: React.FC<Props> = ({ entries }) => {
 
           {/* Hint */}
           <div className="ml-auto hidden md:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="text-[8px] font-black uppercase text-blue-400 tracking-tighter">View Full Log</span>
+            <span className="text-[8px] font-black uppercase text-blue-400 tracking-tighter">View Full Ledger</span>
             <span className="text-sm">📖</span>
           </div>
         </div>

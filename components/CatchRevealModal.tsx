@@ -1,89 +1,96 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Marble } from '../types';
 import { UI_HOME } from '../data/uiTexts';
 import { RARITY_COLORS } from '../data/constants';
 import MarbleVisual from './MarbleVisual';
 import MasterTooltip from './MasterTooltip';
+import { useGame } from '../context/GameContext';
 
 interface Props {
-  marble: Marble | null;
+  outcome: { type: 'catch' | 'escape'; marble: Marble } | null;
   onDismiss: () => void;
 }
 
-const CatchRevealModal: React.FC<Props> = ({ marble, onDismiss }) => {
+const CatchRevealModal: React.FC<Props> = ({ outcome, onDismiss }) => {
+  const { gameState, markTooltipSeen } = useGame();
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!marble) return;
+  if (!outcome) return null;
 
-    // We allow a bit more time for the reveal modal to stay open if it's 
-    // a rare find or the first few times, but otherwise keep it snappy.
-    const timer = setTimeout(() => {
-      // Auto-dismiss is disabled if the user needs to read the tooltip OK button,
-      // but for better UX we just let the OK button handle manual dismissal.
-    }, 8000);
+  const { type, marble } = outcome;
+  const isCaughtOnce = (gameState.catchHistory[marble.name] || 0) > 0;
+  const showNudge = type === 'catch' && !gameState.seenTooltips.includes('reveal_mechanic_once');
 
-    return () => clearTimeout(timer);
-  }, [marble]);
+  const handleConfirm = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (showNudge) {
+      markTooltipSeen('reveal_mechanic_once');
+    }
+    onDismiss();
+  };
 
-  if (!marble) return null;
+  const isSuccess = type === 'catch';
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300"
-      onClick={onDismiss}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300 cursor-pointer"
+      onClick={() => handleConfirm()}
     >
       <div 
         ref={cardRef}
-        className="glass-premium w-full max-w-md rounded-[2.5rem] p-8 md:p-12 border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-500 flex flex-col items-center text-center relative cursor-default"
+        className="glass-premium w-full max-w-md rounded-[3rem] p-10 md:p-14 border-2 border-amber-500/40 shadow-[0_0_100px_rgba(0,0,0,0.95)] overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-12 duration-500 flex flex-col items-center text-center relative"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Background Radial Glow based on Rarity */}
-        <div className={`absolute -inset-20 opacity-20 blur-[100px] pointer-events-none bg-gradient-to-br from-blue-500 to-transparent`} />
+        <div className={`absolute -inset-20 opacity-30 blur-[120px] pointer-events-none bg-gradient-to-br ${isSuccess ? 'from-amber-400' : 'from-red-600'} to-transparent`} />
         
-        <span className="text-[10px] md:text-xs font-black text-emerald-400 uppercase tracking-[0.4em] mb-6 animate-pulse">
-          {UI_HOME.CATCH_REVEAL_HEADER}
+        <span className={`text-[11px] md:text-sm font-black uppercase tracking-[0.5em] mb-8 animate-pulse ${isSuccess ? 'text-emerald-400' : 'text-red-400'}`}>
+          {isSuccess ? UI_HOME.CATCH_REVEAL_HEADER : "Specimen Escaped"}
         </span>
 
         {/* The Marble Showcase */}
-        <div className="relative mb-8 group">
-          <div className="absolute -inset-10 bg-white/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="scale-[1.8] md:scale-[2.5] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] animate-float">
-            <MarbleVisual marble={marble} size="md" />
+        <div className="relative mb-10 group">
+          <div className={`absolute -inset-14 ${isSuccess ? 'bg-amber-400/10' : 'bg-red-600/10'} rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity`} />
+          <div className="scale-[2.0] md:scale-[3.0] drop-shadow-[0_25px_50px_rgba(0,0,0,0.7)] animate-float">
+            <MarbleVisual marble={marble} size="md" isSilhouette={!isCaughtOnce && !isSuccess} />
           </div>
         </div>
 
         {/* Info */}
-        <div className="space-y-2 mt-4">
-          <p className={`text-[12px] md:text-lg font-black uppercase tracking-widest ${RARITY_COLORS[marble.rarity]}`}>
-            {marble.rarity}
+        <div className="space-y-3 mt-6">
+          <p className={`text-sm md:text-xl font-black uppercase tracking-[0.2em] ${isSuccess || isCaughtOnce ? RARITY_COLORS[marble.rarity] : 'text-slate-600'}`}>
+            {isSuccess || isCaughtOnce ? marble.rarity : "???"}
           </p>
-          <h3 className="text-2xl md:text-4xl font-black font-outfit tracking-tighter text-slate-100 uppercase">
-            {marble.name}
+          <h3 className="text-3xl md:text-5xl font-black font-outfit tracking-tighter text-slate-100 uppercase drop-shadow-md">
+            {isSuccess || isCaughtOnce ? marble.name : "Unknown Essence"}
           </h3>
-          <div className="max-w-[280px] mx-auto pt-4">
-            <p className="text-[11px] md:text-sm text-slate-400 italic leading-relaxed">
-              "{marble.description}"
+          <div className="max-w-[300px] mx-auto pt-6">
+            <p className="text-xs md:text-base text-slate-300 italic leading-relaxed font-medium">
+              {isSuccess 
+                ? `"${marble.description}"` 
+                : isCaughtOnce 
+                  ? `"${marble.name} slipped through the Mandate's grasp. Its spirit remains free."`
+                  : `"An unidentified specimen resisted your seal. Strengthen your Mandate to bind such elusive glass."`}
             </p>
           </div>
         </div>
 
-        {/* Nudge Tooltip pointing to the "Bound Minions" concept */}
-        <MasterTooltip 
-          message={`This spirit is now among your Bound Minions. You can audit your collection in the Outpost vault.`}
-          position="bottom"
-          anchorRef={cardRef}
-          wide
-          onOk={onDismiss}
-        />
+        {showNudge && (
+          <MasterTooltip 
+            message={`This spirit is now among your Bound Minions. You can audit your collection in the Outpost vault.`}
+            position="bottom"
+            anchorRef={cardRef}
+            wide
+            onOk={() => handleConfirm()}
+          />
+        )}
 
-        {/* Dismiss Instruction */}
-        <div className="mt-10 flex items-center space-x-2 opacity-30">
-          <div className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-          <span className="text-[8px] font-black uppercase tracking-widest text-slate-400">Press OK to Confirm</span>
-          <div className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-        </div>
+        <button 
+          onClick={handleConfirm}
+          className={`mt-12 px-14 py-4 ${isSuccess ? 'bg-amber-600 hover:bg-amber-500' : 'bg-red-950 hover:bg-red-900'} text-white font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-2xl border border-white/20 text-[11px] md:text-sm`}
+        >
+          {isSuccess ? "Confirm Binding" : "Return to Outpost"}
+        </button>
       </div>
     </div>
   );

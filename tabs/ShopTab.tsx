@@ -13,8 +13,6 @@ const ShopTab: React.FC = () => {
   const [subTab, setSubTab] = useState<ShopSubTab>('vessels');
   
   const jarTabRef = useRef<HTMLButtonElement>(null);
-
-  // Store refs for specific buy buttons to attach tooltips
   const buyJarRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -34,23 +32,30 @@ const ShopTab: React.FC = () => {
     buyCover(id);
   };
 
+  const renderGlossary = () => (
+    <div className="mb-6 bg-amber-500/5 border border-amber-500/20 rounded-2xl p-4 text-[9px] md:text-xs text-amber-200/60 italic space-y-1">
+      <p><strong className="text-amber-400">CAPACITY:</strong> {UI_SHOP.GLOSSARY_CAPACITY}</p>
+      <p><strong className="text-amber-400">MANDATE:</strong> {UI_SHOP.GLOSSARY_MANDATE}</p>
+      <p><strong className="text-amber-400">HARVEST:</strong> {UI_SHOP.GLOSSARY_HARVEST}</p>
+    </div>
+  );
+
   const renderVesselList = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-right-4 duration-300 px-2 pb-32">
       {Object.values(JARS).map((jar, index) => {
         const isOwned = gameState.ownedJarIds.includes(jar.id);
         const canAfford = gameState.currency >= jar.cost;
-        // Onboarding: Only point to the jar if it's the target AND we can afford it
         const isTutorialTarget = gameState.onboardingStep === 8 && jar.id === 'glass_flask' && canAfford;
         
         return (
-          <div key={jar.id} className={`glass-premium flex flex-col p-5 md:p-7 rounded-[2.5rem] border transition-all group relative ${isTutorialTarget ? 'ring-2 ring-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.3)]' : ''} ${!isOwned && !canAfford ? 'opacity-60' : 'hover:border-blue-500/30'}`}>
+          <div key={jar.id} className={`glass-premium flex flex-col p-5 md:p-7 rounded-[2.5rem] border transition-all group relative ${isTutorialTarget ? 'ring-2 ring-amber-500 shadow-[0_0_30px_rgba(251,191,36,0.3)]' : ''} ${!isOwned && !canAfford ? 'opacity-60' : 'hover:border-amber-500/30'}`}>
             <div className="flex items-start justify-between mb-6">
               <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center bg-black/40 rounded-3xl group-hover:scale-105 transition-transform border border-white/5 shadow-inner">
                 <span className="text-4xl md:text-6xl drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">{jar.icon}</span>
               </div>
               <div className="flex flex-col items-end">
                 {isOwned ? (
-                  <span className="text-[8px] md:text-[10px] bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full font-black uppercase tracking-widest border border-blue-500/20">
+                  <span className="text-[8px] md:text-[10px] bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full font-black uppercase tracking-widest border border-amber-500/20">
                     {UI_COMMON.OWNED_LABEL}
                   </span>
                 ) : (
@@ -71,7 +76,7 @@ const ShopTab: React.FC = () => {
               <div className="flex flex-wrap gap-2">
                 <div className="bg-white/5 px-3 py-1.5 rounded-xl border border-white/5 flex flex-col">
                   <span className="text-[7px] font-black uppercase text-slate-500 tracking-tighter">{UI_COMMON.CAPACITY_LABEL}</span>
-                  <span className="text-xs md:text-sm font-black text-blue-400">{jar.capacity}</span>
+                  <span className="text-xs md:text-sm font-black text-amber-400">{jar.capacity}</span>
                 </div>
                 <div className="bg-white/5 px-3 py-1.5 rounded-xl border border-white/5 flex flex-col">
                   <span className="text-[7px] font-black uppercase text-slate-500 tracking-tighter">{UI_COMMON.LUCK_LABEL}</span>
@@ -79,7 +84,7 @@ const ShopTab: React.FC = () => {
                 </div>
                 <div className="bg-white/5 px-3 py-1.5 rounded-xl border border-white/5 flex flex-col">
                   <span className="text-[7px] font-black uppercase text-slate-500 tracking-tighter">{UI_COMMON.YIELD_LABEL}</span>
-                  <span className="text-xs md:text-sm font-black text-indigo-400">x{jar.yieldMultiplier.toFixed(1)}</span>
+                  <span className="text-xs md:text-sm font-black text-orange-400">x{jar.yieldMultiplier.toFixed(1)}</span>
                 </div>
               </div>
             </div>
@@ -100,7 +105,7 @@ const ShopTab: React.FC = () => {
                 className={`w-full py-4 rounded-2xl text-[10px] md:text-sm font-black uppercase tracking-widest transition-all shadow-xl active:scale-95 ${
                   isOwned ? 'bg-slate-800/50 text-slate-600 border border-white/5 cursor-not-allowed' : 
                   canAfford ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white hover:brightness-110' : 'bg-slate-800 text-slate-700 cursor-not-allowed'
-                } ${isTutorialTarget ? 'ring-4 ring-blue-400 animate-pulse' : ''}`}
+                } ${isTutorialTarget ? 'ring-4 ring-amber-400 animate-pulse' : ''}`}
               >
                 {isOwned ? UI_COMMON.OWNED_LABEL : UI_COMMON.BUY}
               </button>
@@ -146,11 +151,11 @@ const ShopTab: React.FC = () => {
                 "{cover.description}"
               </p>
               
-              <div className="flex flex-wrap gap-2">
+              <div className="flex wrap gap-2">
                 {cover.luckValue > 0 && (
-                  <div className="bg-blue-500/10 px-3 py-1.5 rounded-xl border border-blue-500/10 flex flex-col">
-                    <span className="text-[7px] font-black text-blue-400 uppercase tracking-tighter">{UI_COMMON.LUCK_LABEL}</span>
-                    <span className="text-xs md:text-sm font-black text-blue-300">+{cover.luckValue}</span>
+                  <div className="bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/10 flex flex-col">
+                    <span className="text-[7px] font-black text-amber-400 uppercase tracking-tighter">{UI_COMMON.LUCK_LABEL}</span>
+                    <span className="text-xs md:text-sm font-black text-amber-300">+{cover.luckValue}</span>
                   </div>
                 )}
                 {cover.yieldValue > 0 && (
@@ -167,7 +172,7 @@ const ShopTab: React.FC = () => {
               disabled={isActive || (!isOwned && !canAfford)} 
               className={`w-full py-4 rounded-2xl text-[10px] md:text-sm font-black uppercase tracking-widest transition-all shadow-xl active:scale-95 ${
                 isActive ? 'bg-slate-800/50 text-slate-600 border border-white/5 cursor-not-allowed' : 
-                isOwned ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:brightness-110' :
+                isOwned ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white hover:brightness-110' :
                 canAfford ? 'bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:brightness-110' : 'bg-slate-800 text-slate-700 cursor-not-allowed'
               }`}
             >
@@ -192,7 +197,7 @@ const ShopTab: React.FC = () => {
           <button 
             ref={jarTabRef}
             onClick={() => setSubTab('vessels')}
-            className={`flex-1 py-3 px-3 rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center space-x-2 ${subTab === 'vessels' ? 'bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]' : 'text-slate-500 hover:text-slate-300'}`}
+            className={`flex-1 py-3 px-3 rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-300 flex items-center justify-center space-x-2 ${subTab === 'vessels' ? 'bg-amber-600 text-white shadow-[0_0_20px_rgba(217,119,6,0.4)]' : 'text-slate-500 hover:text-slate-300'}`}
           >
             <span className="text-lg">🏺</span>
             <span>{UI_SHOP.TAB_VESSELS}</span>
@@ -212,6 +217,7 @@ const ShopTab: React.FC = () => {
 
       <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pt-4 relative z-20">
         <div className="max-w-4xl mx-auto h-full">
+          {renderGlossary()}
           {subTab === 'vessels' ? renderVesselList() : renderCoverList()}
         </div>
       </div>
