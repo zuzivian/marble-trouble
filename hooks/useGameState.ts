@@ -1,5 +1,4 @@
 
-// Fix: Corrected corrupted import statement on line 1
 import { useState, useEffect, useCallback } from 'react';
 import { GameState, Marble, DiaryEntry } from '../types';
 import { JARS, COVERS } from '../data/constants';
@@ -19,20 +18,21 @@ export const useGameState = () => {
       jarContents: {}, 
       activeCoverId: 'wooden_snapper',
       ownedCoverIds: ['wooden_snapper'],
-      currency: 200,
+      currency: 0, 
       lastCatchTimestamp: 0,
       catchHistory: {},
       totalCatches: 0,
-      username: 'Apprentice Collector',
+      username: 'Imperial Aspirant',
       activeJarId: 'lead_jar',
       ownedJarIds: ['lead_jar'],
       diaryEntries: [{
         id: 'initial',
         timestamp: Date.now(),
-        message: 'The Workshop furnace has been lit. Awaiting the first descent.',
+        message: 'The Outpost scroll has been unrolled. Awaiting the first spirit.',
         type: 'system',
-        icon: '🔥'
-      }]
+        icon: '🏮'
+      }],
+      seenTooltips: []
     };
 
     let rawSaved: string | null = null;
@@ -45,6 +45,7 @@ export const useGameState = () => {
         if (!parsed.activeCoverId) parsed.activeCoverId = 'wooden_snapper';
         if (!parsed.ownedCoverIds || parsed.ownedCoverIds.length === 0) parsed.ownedCoverIds = ['wooden_snapper'];
         if (!parsed.diaryEntries) parsed.diaryEntries = initialState.diaryEntries;
+        if (!parsed.seenTooltips) parsed.seenTooltips = [];
         if (parsed.onboardingStep === undefined) parsed.onboardingStep = parsed.hasCompletedOnboarding ? 7 : 1;
         return { ...initialState, ...parsed, version: CURRENT_VERSION };
       } catch (e) { return initialState; }
@@ -55,7 +56,7 @@ export const useGameState = () => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isCatching, setIsCatching] = useState(false);
   const [lastCaught, setLastCaught] = useState<Marble | null>(null);
-  const [advice, setAdvice] = useState<string>("The furnace glows hot. A perfect time for a roll.");
+  const [advice, setAdvice] = useState<string>("The air is cold. The Talisman is ready.");
 
   const activeJarId = gameState.activeJarId;
   const activeJar = JARS[activeJarId] || JARS['lead_jar'];
@@ -84,6 +85,13 @@ export const useGameState = () => {
     return () => clearInterval(timer);
   }, [updateTimeLeft]);
 
+  const markTooltipSeen = useCallback((tooltipId: string) => {
+    setGameState(prev => {
+      if (prev.seenTooltips.includes(tooltipId)) return prev;
+      return { ...prev, seenTooltips: [...prev.seenTooltips, tooltipId] };
+    });
+  }, []);
+
   const addDiaryEntry = useCallback((message: string, type: DiaryEntry['type'], icon: string) => {
     const newEntry: DiaryEntry = {
       id: Math.random().toString(36).substr(2, 9),
@@ -94,7 +102,7 @@ export const useGameState = () => {
     };
     setGameState(prev => ({
       ...prev,
-      diaryEntries: [newEntry, ...prev.diaryEntries].slice(0, 100) // Keep last 100
+      diaryEntries: [newEntry, ...prev.diaryEntries].slice(0, 100)
     }));
   }, []);
 
@@ -114,7 +122,6 @@ export const useGameState = () => {
       
       const updatedJarContents = [...(gameState.jarContents[gameState.activeJarId] || []), newMarble];
       
-      // Onboarding Step logic: Advance to 5 (Inspect) only if jar becomes full during Workshop Phase (Step 4)
       let nextOnboardingStep = gameState.onboardingStep;
       if (gameState.onboardingStep === 4 && updatedJarContents.length >= activeJar.capacity) {
         nextOnboardingStep = 5;
@@ -139,19 +146,19 @@ export const useGameState = () => {
       setLastCaught(newMarble);
       
       addDiaryEntry(
-        `Snared a ${newMarble.rarity} ${newMarble.name}. The glass pulsates in the jar.`, 
+        `Bound a ${newMarble.rarity} minion: ${newMarble.name}. The Dynasty is strengthened.`, 
         'catch', 
-        '💎'
+        '📜'
       );
 
       if (updatedJarContents.length >= activeJar.capacity) {
-        setAdvice("The jar hums with a perfect seal! Consign it now for a Resonance Bonus.");
+        setAdvice("The vessel hums with perfection! Consign to the Treasury for the Mandate Bonus.");
       } else {
         setAdvice(getMarbleMasterMessage(newState, newMarble));
       }
 
     } catch (e) {
-      console.error("Failed to capture marble:", e);
+      console.error("Failed to capture soul:", e);
     } finally {
       setIsCatching(false);
     }
@@ -172,13 +179,13 @@ export const useGameState = () => {
     setGameState(prev => ({
       ...prev,
       hasCompletedOnboarding: true,
-      onboardingStep: isActuallyFull ? 5 : 4, // Directly go to inspection if already full
+      onboardingStep: isActuallyFull ? 5 : 4,
       activeJarId: jarId,
       ownedJarIds: [jarId],
-      currency: 150,
-      lastCatchTimestamp: 0 // Ensure immediate readiness for the first guided workshop roll
+      currency: 0,
+      lastCatchTimestamp: 0
     }));
-    addDiaryEntry('Apprentice training complete. The Great Work begins.', 'system', '📜');
+    addDiaryEntry('Imperial training complete. Ascend the ranks.', 'system', '🏮');
   };
 
   const sellJarContents = (jarId: string) => {
@@ -192,9 +199,10 @@ export const useGameState = () => {
 
     const totalValue = marbles.reduce((acc, m) => acc + Math.floor(m.value * multiplier), 0);
     
-    // Check for onboarding completion (Sale)
     let nextOnboardingStep = gameState.onboardingStep;
-    if (gameState.onboardingStep === 6) nextOnboardingStep = 7;
+    if (gameState.onboardingStep === 6) {
+      nextOnboardingStep = 7;
+    }
 
     setGameState(prev => ({
       ...prev,
@@ -203,12 +211,12 @@ export const useGameState = () => {
       jarContents: { ...prev.jarContents, [jarId]: [] }
     }));
     
-    setAdvice(isFull ? "The resonance was spectacular! A fine harvest." : "The furnace accepts your glass.");
+    setAdvice(isFull ? "The Emperor is pleased! A bountiful harvest." : "The Treasury accepts your glass.");
     
     addDiaryEntry(
-      `Consigned ${marbles.length} specimens to the furnace. Earned ${totalValue} Shards.`, 
+      `Consigned ${marbles.length} souls to the Treasury. Earned ${totalValue} Tael.`, 
       'sell', 
-      '🔥'
+      '💰'
     );
     
     return totalValue;
@@ -222,8 +230,8 @@ export const useGameState = () => {
         currency: prev.currency - jar.cost,
         ownedJarIds: [...prev.ownedJarIds, jarId]
       }));
-      setAdvice(`${jar.name} acquired! A fine vessel for your workshop.`);
-      addDiaryEntry(`Acquired the ${jar.name}. Storage capacity increased.`, 'upgrade', '🏺');
+      setAdvice(`The ${jar.name} has been enfeoffed to your name.`);
+      addDiaryEntry(`Acquired the ${jar.name}. Imperial storage expanded.`, 'upgrade', '🏺');
     }
   };
 
@@ -237,16 +245,16 @@ export const useGameState = () => {
         ownedCoverIds: [...prev.ownedCoverIds, coverId],
         activeCoverId: coverId 
       }));
-      setAdvice(`The ${cover.name} is installed. Hear it whir!`);
-      addDiaryEntry(`Forged and installed the ${cover.name}. Snare efficiency up.`, 'upgrade', '⚙️');
+      setAdvice(`The ${cover.name} Seal is forged. Command the stars.`);
+      addDiaryEntry(`Commissioned the ${cover.name}. Scroll efficiency improved.`, 'upgrade', '📜');
     }
   };
 
   const equipCover = (coverId: string) => {
     if (gameState.ownedCoverIds.includes(coverId)) {
       setGameState(prev => ({ ...prev, activeCoverId: coverId }));
-      setAdvice(`Armed the workshop with the ${COVERS.find(c => c.id === coverId)?.name}.`);
-      addDiaryEntry(`Re-calibrated snare to ${COVERS.find(c => c.id === coverId)?.name}.`, 'upgrade', '🔄');
+      setAdvice(`Appointed the ${COVERS.find(c => c.id === coverId)?.name} to your Outpost.`);
+      addDiaryEntry(`Re-sealed scroll with ${COVERS.find(c => c.id === coverId)?.name}.`, 'upgrade', '🔄');
     }
   };
 
@@ -277,6 +285,7 @@ export const useGameState = () => {
     buyJar,
     buyCover,
     equipCover,
-    equipJar
+    equipJar,
+    markTooltipSeen
   };
 };

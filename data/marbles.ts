@@ -3,93 +3,93 @@ import { Rarity, MarbleTemplate } from '../types';
 
 export const MARBLE_DATABASE: MarbleTemplate[] = [
   {
-    name: "Clear Sprite",
-    description: "A simple, perfectly clear glass marble found in most beginner collections.",
+    name: "Xiao the Scout",
+    description: "A dim-witted but loyal orb. He spends his eternity looking for the Overlord's lost slippers.",
     rarity: Rarity.COMMON,
-    color: "#e2e8f0",
+    color: "#f8fafc",
     pattern: "Clear",
     value: 10,
     visualType: 'clear'
   },
   {
-    name: "Sky Swirl",
-    description: "Cloud-like wisps of white dancing in a sky-blue base.",
+    name: "Azure Drifting Soul",
+    description: "A dreamy minion who frequently forgets he has been enslaved. He likes to watch the clouds.",
     rarity: Rarity.COMMON,
-    color: "#60a5fa",
+    color: "#38bdf8",
     pattern: "Swirl",
-    value: 15,
+    value: 12,
     visualType: 'swirl'
   },
   {
-    name: "Forest Dweller",
-    description: "Deep earthy greens with mossy internal patterns.",
+    name: "The Cinnabar Guard",
+    description: "Fierce and hot-tempered. He guards the furnace entrance with a tiny, invisible pike.",
     rarity: Rarity.UNCOMMON,
-    color: "#166534",
+    color: "#ef4444",
+    pattern: "Metallic",
+    value: 18,
+    visualType: 'metallic'
+  },
+  {
+    name: "Jade Wanderer",
+    description: "A restless spirit seeking the ancient Silk Road. He is prone to sighing in the jar.",
+    rarity: Rarity.UNCOMMON,
+    color: "#10b981",
     pattern: "Speckled",
-    value: 35,
+    value: 24,
     visualType: 'solid'
   },
   {
-    name: "Cobalt Core",
-    description: "A dense, metallic blue marble that feels heavier than it looks.",
-    rarity: Rarity.UNCOMMON,
-    color: "#1e3a8a",
+    name: "Bamboo Whisperer",
+    description: "A gossip-monger of the celestial court. He knows exactly who the Overlord plans to conquer next.",
+    rarity: Rarity.RARE,
+    color: "#84cc16",
+    pattern: "Swirl",
+    value: 32,
+    visualType: 'swirl'
+  },
+  {
+    name: "Silk-Thread Phantom",
+    description: "Elegant and delicate. He believes he is far too refined to be kept in a lead jar.",
+    rarity: Rarity.RARE,
+    color: "#f472b6",
+    pattern: "Clear",
+    value: 40,
+    visualType: 'clear'
+  },
+  {
+    name: "Gilded Eunuch",
+    description: "Obsessed with protocol and shards. He counts the other marbles when you aren't looking.",
+    rarity: Rarity.EPIC,
+    color: "#fbbf24",
     pattern: "Metallic",
     value: 50,
     visualType: 'metallic'
   },
   {
-    name: "Sunset Ember",
-    description: "Glowing orange glass filled with golden sparkles that catch the light.",
-    rarity: Rarity.RARE,
-    color: "#f97316",
-    pattern: "Glitter",
-    value: 120,
-    visualType: 'sparkle'
-  },
-  {
-    name: "Shadow Weaver",
-    description: "Ink-black swirls intertwined with silver ribbons.",
-    rarity: Rarity.RARE,
-    color: "#1e293b",
-    pattern: "Twin Swirl",
-    value: 180,
-    visualType: 'swirl'
-  },
-  {
-    name: "Royal Amethyst",
-    description: "Vibrant purple glass that seems to glow from within.",
+    name: "Obsidian Assassin",
+    description: "The Overlord's silent shadow. He doesn't speak; he only waits for the order to strike.",
     rarity: Rarity.EPIC,
-    color: "#7e22ce",
-    pattern: "Deep Glow",
-    value: 450,
-    visualType: 'metallic'
+    color: "#0f172a",
+    pattern: "Solid",
+    value: 60,
+    visualType: 'solid'
   },
   {
-    name: "Verdant Eye",
-    description: "A rare green marble with a single, perfectly centered swirl.",
-    rarity: Rarity.EPIC,
-    color: "#15803d",
-    pattern: "Target",
-    value: 600,
-    visualType: 'swirl'
-  },
-  {
-    name: "Dragon's Fury",
-    description: "Molten red and charred black glass, sparkling with hidden heat.",
+    name: "Imperial Fire-Drake",
+    description: "A fragment of the dragon that guards the Forbidden City. He hums with ancient power.",
     rarity: Rarity.LEGENDARY,
-    color: "#b91c1c",
-    pattern: "Chaos",
-    value: 1500,
+    color: "#ea580c",
+    pattern: "Sparkle",
+    value: 75,
     visualType: 'sparkle'
   },
   {
-    name: "Nebula Soul",
-    description: "The ultimate prize. Contains a microscopic universe of cosmic dust.",
+    name: "The Celestial Sovereign",
+    description: "The ultimate minion. He is a direct fragment of the Overlord's own will. Bow before him.",
     rarity: Rarity.MYTHIC,
-    color: "#4c1d95",
-    pattern: "Universe",
-    value: 5000,
+    color: "#4338ca",
+    pattern: "Sparkle",
+    value: 100,
     visualType: 'sparkle'
   }
 ];

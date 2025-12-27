@@ -1,10 +1,10 @@
 
 import { Rarity } from '../types';
 
-export const CURRENT_VERSION = 5; 
-// Cooldown in seconds between marble encounters
-export const COOLDOWN_TIME = 2; // Development mode (2 seconds)
-export const STORAGE_KEY = 'marble_trouble_v5_state';
+export const CURRENT_VERSION = 6; 
+// Cooldown in seconds between marble encounters (5 minutes = 300 seconds)
+export const COOLDOWN_TIME = 300; 
+export const STORAGE_KEY = 'marble_trouble_v6_state';
 
 // Probabilities for Master Glassblower messages
 export const MESSAGE_THRESHOLDS = {

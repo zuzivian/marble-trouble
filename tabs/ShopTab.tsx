@@ -39,7 +39,8 @@ const ShopTab: React.FC = () => {
       {Object.values(JARS).map((jar, index) => {
         const isOwned = gameState.ownedJarIds.includes(jar.id);
         const canAfford = gameState.currency >= jar.cost;
-        const isTutorialTarget = gameState.onboardingStep === 8 && jar.id === 'glass_flask';
+        // Onboarding: Only point to the jar if it's the target AND we can afford it
+        const isTutorialTarget = gameState.onboardingStep === 8 && jar.id === 'glass_flask' && canAfford;
         
         return (
           <div key={jar.id} className={`glass-premium flex flex-col p-5 md:p-7 rounded-[2.5rem] border transition-all group relative ${isTutorialTarget ? 'ring-2 ring-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.3)]' : ''} ${!isOwned && !canAfford ? 'opacity-60' : 'hover:border-blue-500/30'}`}>

@@ -1,24 +1,38 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Marble, MarbleTemplate } from '../types';
 import { MARBLE_DATABASE } from '../data/marbles';
 import { RARITY_COLORS } from '../data/constants';
 import { useGame } from '../context/GameContext';
-import { UI_ALBUM } from '../data/uiTexts';
+import { UI_ALBUM, UI_ONBOARDING } from '../data/uiTexts';
 import MarbleVisual from '../components/MarbleVisual';
 import MarbleInfoModal from '../components/MarbleInfoModal';
+import MasterTooltip from '../components/MasterTooltip';
 
 const AlbumTab: React.FC = () => {
-  const { gameState } = useGame();
+  const { gameState, markTooltipSeen } = useGame();
   const [selectedTemplate, setSelectedTemplate] = useState<MarbleTemplate | null>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   const handleClose = () => setSelectedTemplate(null);
 
+  const showExplanation = gameState.seenTooltips.includes('album_hud') && !gameState.seenTooltips.includes('album_tab');
+
   return (
     <div className="flex flex-col h-full overflow-hidden px-2">
-      <div className="flex flex-col items-center mb-6 md:mb-10 shrink-0 pt-4">
-        <h2 className="text-2xl md:text-5xl font-outfit font-black tracking-tighter uppercase text-slate-100">{UI_ALBUM.TITLE}</h2>
+      <div className="flex flex-col items-center mb-6 md:mb-10 shrink-0 pt-4 relative">
+        <h2 ref={titleRef} className="text-2xl md:text-5xl font-outfit font-black tracking-tighter uppercase text-slate-100">{UI_ALBUM.TITLE}</h2>
         <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-transparent rounded-full mt-2" />
+        
+        {showExplanation && (
+          <MasterTooltip 
+            message={UI_ONBOARDING.TUTORIAL_CATALOG_TAB}
+            position="bottom"
+            anchorRef={titleRef}
+            wide
+            onOk={() => markTooltipSeen('album_tab')}
+          />
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar pb-32">

@@ -44,7 +44,7 @@ const Onboarding: React.FC = () => {
 
   const starterJars = [
     { ...JARS['lead_jar'], tagline: UI_ONBOARDING.JAR_LEAD_TAG, icon: '🏺' },
-    { ...JARS['glass_flask'], name: 'Glass Vial', tagline: UI_ONBOARDING.JAR_GLASS_TAG, icon: '🧪', capacity: 5, luckBonus: 20 }
+    { ...JARS['glass_flask'], name: 'Glass Vial', tagline: UI_ONBOARDING.JAR_GLASS_TAG, icon: '🧪', capacity: 3, luckBonus: 1.5 }
   ];
 
   const handleNextStep = () => {

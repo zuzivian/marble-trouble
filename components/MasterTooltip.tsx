@@ -5,47 +5,63 @@ import { createPortal } from 'react-dom';
 interface Props {
   message: string;
   position: 'top' | 'bottom' | 'left' | 'right';
-  className?: string; // Still used for relative offsets if needed
+  className?: string;
   wide?: boolean;
-  anchorRef?: React.RefObject<HTMLElement | null>; // New: allow passing a ref to auto-calculate position
+  anchorRef?: React.RefObject<HTMLElement | null>;
+  onOk?: () => void; // Optional callback for informational tooltips
 }
 
-const MasterTooltip: React.FC<Props> = ({ message, position, className = "", wide = false, anchorRef }) => {
+const MasterTooltip: React.FC<Props> = ({ message, position, className = "", wide = false, anchorRef, onOk }) => {
   const [coords, setCoords] = useState<{ top: number; left: number }>({ top: -9999, left: -9999 });
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let animationFrameId: number;
+    const startTime = Date.now();
+    const duration = 1000;
+
     const updatePosition = () => {
       if (!anchorRef?.current) return;
       
       const rect = anchorRef.current.getBoundingClientRect();
+      
+      if (rect.width === 0 && rect.height === 0) {
+        if (Date.now() - startTime < duration) {
+          animationFrameId = requestAnimationFrame(updatePosition);
+        }
+        return;
+      }
+
       let top = 0;
       let left = 0;
 
-      // Calculate center of anchor
       const anchorCenterX = rect.left + rect.width / 2;
       const anchorCenterY = rect.top + rect.height / 2;
 
       switch (position) {
         case 'top':
-          top = rect.top - 20; // Some spacing
+          top = rect.top - 12;
           left = anchorCenterX;
           break;
         case 'bottom':
-          top = rect.bottom + 20;
+          top = rect.bottom + 12;
           left = anchorCenterX;
           break;
         case 'left':
           top = anchorCenterY;
-          left = rect.left - 20;
+          left = rect.left - 12;
           break;
         case 'right':
           top = anchorCenterY;
-          left = rect.right + 20;
+          left = rect.right + 12;
           break;
       }
 
       setCoords({ top, left });
+
+      if (Date.now() - startTime < duration) {
+        animationFrameId = requestAnimationFrame(updatePosition);
+      }
     };
 
     updatePosition();
@@ -53,6 +69,7 @@ const MasterTooltip: React.FC<Props> = ({ message, position, className = "", wid
     window.addEventListener('scroll', updatePosition, true);
     
     return () => {
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', updatePosition);
       window.removeEventListener('scroll', updatePosition, true);
     };
@@ -91,7 +108,7 @@ const MasterTooltip: React.FC<Props> = ({ message, position, className = "", wid
       className={`pointer-events-none transform-gpu ${transformClass} ${className}`}
     >
       <div className="animate-float">
-        <div className={`relative bg-slate-900 px-8 py-3 md:px-12 md:py-4 rounded-[2rem] border-2 border-blue-500 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(37,99,235,0.4)] ${maxWidthClass} ring-1 ring-white/10`}>
+        <div className={`relative bg-slate-900 px-8 py-3 md:px-12 md:py-4 rounded-[2rem] border-2 border-blue-500 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(37,99,235,0.4)] ${maxWidthClass} ring-1 ring-white/10 flex flex-col items-center`}>
           {/* Avatar Head */}
           <div className="absolute -top-6 -left-10 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-600 to-indigo-900 border-2 border-white/30 rounded-full flex items-center justify-center text-3xl md:text-4xl shadow-2xl z-20">
             🧙‍♂️
@@ -100,6 +117,18 @@ const MasterTooltip: React.FC<Props> = ({ message, position, className = "", wid
           <p className="text-[12px] md:text-[15px] font-black text-white uppercase tracking-tight leading-snug italic drop-shadow-sm text-center">
             "{message}"
           </p>
+          
+          {onOk && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                onOk();
+              }}
+              className="mt-3 px-10 py-2 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-black uppercase tracking-widest rounded-xl transition-all pointer-events-auto active:scale-95 shadow-lg border border-white/20"
+            >
+              OK
+            </button>
+          )}
           
           {/* Arrow */}
           <div className={`absolute w-0 h-0 border-[10px] border-transparent ${arrowStyles[position]}`} />

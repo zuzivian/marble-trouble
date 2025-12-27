@@ -1,18 +1,32 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { JARS } from '../data/constants';
 import { useGame } from '../context/GameContext';
-import { UI_SHELF, UI_COMMON } from '../data/uiTexts';
+import { UI_SHELF, UI_COMMON, UI_ONBOARDING } from '../data/uiTexts';
 import MarbleVisual from '../components/MarbleVisual';
+import MasterTooltip from '../components/MasterTooltip';
 
 const ShelfTab: React.FC = () => {
-  const { gameState, equipJar, sellJarContents } = useGame();
+  const { gameState, equipJar, sellJarContents, markTooltipSeen } = useGame();
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  const showExplanation = gameState.seenTooltips.includes('shelf_hud') && !gameState.seenTooltips.includes('shelf_tab');
 
   return (
     <div className="flex flex-col h-full overflow-hidden px-2">
-      <div className="flex flex-col items-center mb-6 md:mb-10 shrink-0 pt-4">
-        <h2 className="text-2xl md:text-5xl font-outfit font-black tracking-tighter uppercase text-slate-100">{UI_SHELF.TITLE}</h2>
+      <div className="flex flex-col items-center mb-6 md:mb-10 shrink-0 pt-4 relative">
+        <h2 ref={titleRef} className="text-2xl md:text-5xl font-outfit font-black tracking-tighter uppercase text-slate-100">{UI_SHELF.TITLE}</h2>
         <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full mt-2" />
+        
+        {showExplanation && (
+          <MasterTooltip 
+            message={UI_ONBOARDING.TUTORIAL_GALLERY_TAB}
+            position="bottom"
+            anchorRef={titleRef}
+            wide
+            onOk={() => markTooltipSeen('shelf_tab')}
+          />
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar space-y-6 pb-32">
@@ -58,7 +72,6 @@ const ShelfTab: React.FC = () => {
                 </div>
               </div>
 
-              {/* Marble Display Case */}
               <div className="bg-black/30 rounded-3xl p-4 md:p-8 border border-white/5 shadow-inner">
                 {contents.length === 0 ? (
                   <div className="py-12 flex flex-col items-center justify-center opacity-20">

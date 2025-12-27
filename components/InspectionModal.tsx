@@ -27,7 +27,8 @@ const InspectionModal: React.FC<Props> = ({ isOpen, onClose, marbles, jar, total
   const totalValue = marbles.reduce((acc, m) => acc + Math.floor(m.value * yieldMultiplier), 0);
   const resonanceShards = isFull ? Math.floor(totalValue - (totalValue / 1.2)) : 0;
 
-  const isTutorialConsigning = gameState.onboardingStep === 6 || (gameState.onboardingStep === 5 && isFull);
+  // Step 6 is explicitly "Consign All Marbles"
+  const isTutorialConsigning = gameState.onboardingStep === 6;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/85 backdrop-blur-xl animate-in fade-in duration-300">

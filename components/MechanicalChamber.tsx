@@ -30,7 +30,14 @@ const MechanicalChamber: React.FC<Props> = ({ marbles, capacity, onInspect }) =>
   const displayLimit = isMobile ? 6 : 18; 
   const displayStacks = stackArray.slice(0, displayLimit);
 
-  const isTutorialInspecting = gameState.onboardingStep === 5;
+  // Overlap protection: Only show vault nudge if no informational HUD nudges are pending
+  const hasPendingHUDNudge = (
+    (gameState.totalCatches >= 1 && !gameState.seenTooltips.includes('shelf_hud')) ||
+    (gameState.totalCatches >= 2 && !gameState.seenTooltips.includes('album_hud')) ||
+    (gameState.onboardingStep >= 7 && gameState.currency >= 250 && !gameState.seenTooltips.includes('shop_hud'))
+  );
+
+  const isTutorialInspecting = gameState.onboardingStep === 5 && !hasPendingHUDNudge;
 
   return (
     <div className="flex flex-col w-full h-full min-h-0 relative">

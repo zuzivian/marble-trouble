@@ -1,9 +1,10 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Marble } from '../types';
 import { UI_HOME } from '../data/uiTexts';
 import { RARITY_COLORS } from '../data/constants';
 import MarbleVisual from './MarbleVisual';
+import MasterTooltip from './MasterTooltip';
 
 interface Props {
   marble: Marble | null;
@@ -11,25 +12,32 @@ interface Props {
 }
 
 const CatchRevealModal: React.FC<Props> = ({ marble, onDismiss }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!marble) return;
 
+    // We allow a bit more time for the reveal modal to stay open if it's 
+    // a rare find or the first few times, but otherwise keep it snappy.
     const timer = setTimeout(() => {
-      onDismiss();
-    }, 5000);
+      // Auto-dismiss is disabled if the user needs to read the tooltip OK button,
+      // but for better UX we just let the OK button handle manual dismissal.
+    }, 8000);
 
     return () => clearTimeout(timer);
-  }, [marble, onDismiss]);
+  }, [marble]);
 
   if (!marble) return null;
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300 cursor-pointer"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300"
       onClick={onDismiss}
     >
       <div 
-        className="glass-premium w-full max-w-md rounded-[2.5rem] p-8 md:p-12 border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-500 flex flex-col items-center text-center relative"
+        ref={cardRef}
+        className="glass-premium w-full max-w-md rounded-[2.5rem] p-8 md:p-12 border border-white/20 shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-500 flex flex-col items-center text-center relative cursor-default"
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Background Radial Glow based on Rarity */}
         <div className={`absolute -inset-20 opacity-20 blur-[100px] pointer-events-none bg-gradient-to-br from-blue-500 to-transparent`} />
@@ -61,10 +69,19 @@ const CatchRevealModal: React.FC<Props> = ({ marble, onDismiss }) => {
           </div>
         </div>
 
+        {/* Nudge Tooltip pointing to the "Bound Minions" concept */}
+        <MasterTooltip 
+          message={`This spirit is now among your Bound Minions. You can audit your collection in the Outpost vault.`}
+          position="bottom"
+          anchorRef={cardRef}
+          wide
+          onOk={onDismiss}
+        />
+
         {/* Dismiss Instruction */}
         <div className="mt-10 flex items-center space-x-2 opacity-30">
           <div className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-          <span className="text-[8px] font-black uppercase tracking-widest text-slate-400">Tap to Dismiss</span>
+          <span className="text-[8px] font-black uppercase tracking-widest text-slate-400">Press OK to Confirm</span>
           <div className="w-1.5 h-1.5 rounded-full bg-slate-400" />
         </div>
       </div>

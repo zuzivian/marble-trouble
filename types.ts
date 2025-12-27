@@ -66,4 +66,5 @@ export interface GameState {
   activeJarId: string;
   ownedJarIds: string[];
   diaryEntries: DiaryEntry[];
+  seenTooltips: string[];
 }

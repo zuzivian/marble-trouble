@@ -1,91 +1,95 @@
 
 export const UI_COMMON = {
-  CURRENCY_SYMBOL: 'Shards',
-  LUCK_LABEL: 'ATTRACTION',
-  YIELD_LABEL: 'YIELD',
+  CURRENCY_SYMBOL: 'Tael',
+  LUCK_LABEL: 'MANDATE',
+  YIELD_LABEL: 'HARVEST',
   CAPACITY_LABEL: 'CAPACITY',
-  OWNED_LABEL: 'Owned',
+  OWNED_LABEL: 'Enfeoffed',
   ACTIVE_LABEL: 'Active',
   CLOSE: '✕',
-  BUY: 'Buy',
-  APPLY: 'Apply',
-  EQUIP: 'Equip',
-  SELL_ALL: 'Sell All',
-  SYSTEM_READY: 'Snare Armed',
-  STANDBY: 'Awaiting Glint',
-  EMPTY: 'Empty',
-  SNARING: 'Snaring...',
-  LOCATION_LABEL: 'Location'
+  BUY: 'Acquire',
+  APPLY: 'Sanction',
+  EQUIP: 'Appoint',
+  SELL_ALL: 'Confer to Throne',
+  SYSTEM_READY: 'Scroll Ready',
+  STANDBY: 'Watching the Stars',
+  EMPTY: 'Barren',
+  SNARING: 'Sealing...',
+  LOCATION_LABEL: 'Province'
 };
 
 export const UI_ONBOARDING = {
-  MASTER_NAME: 'Master Ignis',
-  MASTER_SUBTITLE: 'Keeper of the Dying Furnace',
-  LORE_P1: '"Listen closely, Apprentice. The world is cooling. The great celestial fires are shattering, raining down as glass fragments—Celestial Marbles—drifting in the void."',
-  LORE_P2: '"Without these shards, our furnace will die, and the darkness will claim the Glazier\'s Legacy. You are the last one who can anchor them back to reality."',
-  LORE_P3: '"My hands are too brittle to snap the snare anymore. Use the heat of this workshop to draw them in. Every roll is a lifeline for our world."',
-  CONTINUE_BTN: 'Accept the Legacy',
-  SELECT_VESSEL_TITLE: 'Choose Your Anchor',
-  SELECT_VESSEL_SUBTITLE: 'Which vessel will hold the light?',
-  JAR_LEAD_TAG: 'Dense & Stable',
-  JAR_GLASS_TAG: 'Resonant & Keen',
-  SPACE_LABEL: 'Volume',
-  ARM_SNARE_BTN: 'Ignite the Snare',
+  MASTER_NAME: 'Chancellor Li',
+  MASTER_SUBTITLE: 'Grand Architect of the Board of Rites',
+  LORE_P1: '"Listen, Commoner. The Tang Dynasty is built on the balance of the Heavens. But the stars are weeping glass, and the Overlord\'s minions roam our borders as rogue spirits."',
+  LORE_P2: '"The Emperor demands these spirits be bound. Do this well, and you may one day walk the vermillion halls of the Daming Palace. Fail, and you will remain a peasant in the dust."',
+  LORE_P3: '"Use this Binding Scroll to anchor the glass minions. The Empire depends on your service."',
+  CONTINUE_BTN: 'Accept the Imperial Mandate',
+  SELECT_VESSEL_TITLE: 'Choose Your Soul-Vessel',
+  SELECT_VESSEL_SUBTITLE: 'Which jar shall bear the Imperial Seal?',
+  JAR_LEAD_TAG: 'Heavy & Stoic',
+  JAR_GLASS_TAG: 'Clear & Resonant',
+  SPACE_LABEL: 'Hold',
+  ARM_SNARE_BTN: 'Unfurl the Seal',
   MOMENT_TITLE: 'The First Descent',
-  MOMENT_SUBTITLE: 'The furnace is roaring. Wait for the glint...',
-  SNARED_SUFFIX: 'Anchored!',
-  PERFORM_SNARE_BTN: 'Snap the Lid',
-  ENTER_WORKSHOP_BTN: 'Begin the Great Work',
-  TUTORIAL_SHOP_HUD: 'A windfall of Shards! Our workshop needs better steel. Visit the Forge to see what we can craft.',
-  TUTORIAL_BUY_JAR: 'A larger vessel allows for more resonance. Acquire a Cobalt Collector to expand our capacity.',
-  TUTORIAL_BUY_LID: 'Efficiency is key. A clockwork lid or gilded snare will sharpen our work. Upgrade your snare to finish your training.'
+  MOMENT_SUBTITLE: 'The Talisman glows. Wait for the soul to flicker...',
+  SNARED_SUFFIX: 'Bound!',
+  PERFORM_SNARE_BTN: 'Strike the Seal',
+  ENTER_WORKSHOP_BTN: 'Enter the Outpost',
+  TUTORIAL_SHOP_HUD: 'You have earned Tael for the Emperor! Visit the Artisan Court in the East Market to improve your tools.',
+  TUTORIAL_BUY_JAR: 'To rise in rank, you need a grander vessel. Acquire the Spirit-Vail of Qin to prove your worth.',
+  TUTORIAL_BUY_LID: 'A true scholar-official uses precision. Forge a Clockwork Lid to sharpen your Binding Scroll.',
+  TUTORIAL_GALLERY_HUD: 'The Jade Repository is open. Manage your various soul-vessels here, Commoner.',
+  TUTORIAL_GALLERY_TAB: 'Switch between your active vessels. Different jars attract different spirits of the Overlord.',
+  TUTORIAL_CATALOG_HUD: 'The Archive of Anomalies has begun recording your history. Every minion you bind is noted by the Ministry.',
+  TUTORIAL_CATALOG_TAB: 'The Archive keeps the true names of the Overlord\'s enslaved glass. See how many you have mastered.'
 };
 
 export const UI_HOME = {
-  MASTER_ROLE: 'Master Ignis',
-  STATS_CALIBRATION: 'Snare Configuration',
-  VAULT_TITLE: 'Specimen Vault',
-  VAULT_SUBTITLE: 'Secured Specimens',
-  VAULT_BUTTON: 'Storage',
-  VAULT_INSPECT_HINT: 'Examine Vault',
-  CATCH_REVEAL_HEADER: 'Specimen Snared',
-  LATEST_STRIKE: 'Latest Catch',
-  READY_FOR_ROLL: 'Ready to Snap',
-  DEFAULT_LOCATION: "Ignis' Workshop"
+  MASTER_ROLE: 'Grand Chancellor',
+  STATS_CALIBRATION: 'Imperial Scroll Settings',
+  VAULT_TITLE: 'Bound Minions',
+  VAULT_SUBTITLE: 'Secured Essences',
+  VAULT_BUTTON: 'Vault',
+  VAULT_INSPECT_HINT: 'Audit Vault',
+  CATCH_REVEAL_HEADER: 'Soul Bound to Dynasty',
+  LATEST_STRIKE: 'Latest Capture',
+  READY_FOR_ROLL: 'Seal Ready',
+  DEFAULT_LOCATION: "Chang'an Outskirts"
 };
 
 export const UI_HUD = {
-  WORKSHOP: 'The Snare',
-  SHELF: 'The Gallery',
-  ALBUM: 'Catalog',
-  SHOP: 'Forge',
-  FULL: 'JAR FULL'
+  WORKSHOP: 'Outpost',
+  SHELF: 'Repository',
+  ALBUM: 'Archive',
+  SHOP: 'East Market',
+  FULL: 'VESSEL FULL'
 };
 
 export const UI_SHELF = {
-  TITLE: 'Vessel Management',
-  MARBLES_SUFFIX: 'MARBLES'
+  TITLE: 'The Jade Repository',
+  MARBLES_SUFFIX: 'MINIONS'
 };
 
 export const UI_SHOP = {
-  TITLE: "The Glazier's Forge",
-  SUBTITLE: 'Forge better jars • Craft deadlier lids',
-  TAB_VESSELS: 'Storage Jars',
-  TAB_COVERS: 'Trap-Lids'
+  TITLE: "The East Market Forge",
+  SUBTITLE: 'Acquire Imperial Vessels • Forge Mandated Seals',
+  TAB_VESSELS: 'Soul Jars',
+  TAB_COVERS: 'Scroll Seals'
 };
 
 export const UI_ALBUM = {
-  TITLE: 'Collection Catalog',
+  TITLE: 'Archive of Anomalies',
   UNKNOWN: '???'
 };
 
 export const UI_MODAL = {
-  CHAMBER_TITLE: 'Jar Inspection',
+  CHAMBER_TITLE: 'Imperial Audit',
   CHAMBER_SUBTITLE: 'Vault',
-  CHAMBER_EMPTY: 'Jar is Empty',
-  SELL_ACTION: 'Consign All Marbles to the Furnace'
+  CHAMBER_EMPTY: 'Vessel is Empty',
+  SELL_ACTION: 'Consign Minions to the Imperial Treasury'
 };
 
 export const UI_JUMBOTRON = {
-  LOGO: 'MARBLE TROUBLE'
+  LOGO: 'DYNASTY SOULS'
 };

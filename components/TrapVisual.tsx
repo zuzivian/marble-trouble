@@ -11,26 +11,29 @@ interface Props {
 const TrapVisual: React.FC<Props> = ({ coverId, jarIcon, isCatching = false }) => {
   return (
     <div className="relative flex flex-col items-center justify-center w-full max-w-[200px] md:max-w-[500px] mx-auto group">
-      {/* The Cover (Top Part) */}
-      <div className={`relative z-20 transition-all duration-700 ease-in-out origin-bottom ${isCatching ? 'translate-y-4 md:translate-y-16 scale-y-75' : 'group-hover:-translate-y-8'}`}>
-        <div className="scale-[1.2] md:scale-[2.2] lg:scale-[2.8] drop-shadow-[0_15px_30px_rgba(0,0,0,0.6)]">
+      {/* Binding Mechanism (The Top Seal) */}
+      <div className={`relative z-20 transition-all duration-700 ease-in-out origin-bottom ${isCatching ? 'translate-y-6 md:translate-y-20 scale-y-90' : 'group-hover:-translate-y-4'}`}>
+        <div className="scale-[1.2] md:scale-[2.4] lg:scale-[3.0] drop-shadow-[0_15px_40px_rgba(0,0,0,0.8)]">
           <CoverVisual coverId={coverId} />
         </div>
+        {isCatching && (
+           <div className="absolute inset-0 bg-amber-400/20 blur-2xl animate-pulse rounded-full" />
+        )}
       </div>
       
-      {/* The Connecting Beam / Glow - Tighter on mobile/tablet */}
-      <div className={`w-[2px] md:w-[8px] h-6 md:h-32 bg-gradient-to-b from-blue-400/50 via-blue-500/20 to-transparent -mt-2 md:-mt-6 transition-opacity duration-500 ${isCatching ? 'opacity-100' : 'opacity-15'}`} />
+      {/* Imperial Energy Stream */}
+      <div className={`w-[2px] md:w-[6px] h-8 md:h-36 bg-gradient-to-b from-amber-400/80 via-amber-600/30 to-transparent -mt-2 md:-mt-8 transition-all duration-500 ${isCatching ? 'opacity-100 scale-x-150' : 'opacity-20'}`} />
 
-      {/* The Vessel (Bottom Part) - Pulled closer on mobile with stronger negative margin */}
-      <div className={`relative -mt-10 md:-mt-10 text-6xl md:text-[9rem] lg:text-[12rem] filter transition-all duration-700 ease-out select-none ${isCatching ? 'scale-110 brightness-150' : 'drop-shadow-[0_30px_55px_rgba(0,0,0,0.75)] group-hover:scale-105'}`}>
-        <span className="inline-block transform-gpu">{jarIcon}</span>
+      {/* The Vessel - Tang Lacquer aesthetic */}
+      <div className={`relative -mt-12 md:-mt-12 text-6xl md:text-[10rem] lg:text-[14rem] filter transition-all duration-700 ease-out select-none ${isCatching ? 'scale-110 brightness-125' : 'drop-shadow-[0_40px_60px_rgba(0,0,0,0.9)] group-hover:scale-105'}`}>
+        <span className="inline-block transform-gpu drop-shadow-[0_0_15px_rgba(251,191,36,0.2)]">{jarIcon}</span>
         
-        {/* Vessel "Internal" Glow */}
-        <div className={`absolute inset-0 rounded-full blur-2xl md:blur-[100px] transition-all duration-1000 ${isCatching ? 'bg-blue-400/60 opacity-100 scale-125' : 'bg-blue-500/15 opacity-0 scale-50'}`} />
+        {/* Internal Spirit Glow */}
+        <div className={`absolute inset-0 rounded-full blur-2xl md:blur-[120px] transition-all duration-1000 ${isCatching ? 'bg-amber-400/40 opacity-100 scale-150' : 'bg-red-500/10 opacity-0 scale-50'}`} />
       </div>
 
-      {/* Grounding Shadow */}
-      <div className={`w-28 md:w-64 h-4 md:h-12 bg-black/60 blur-xl md:blur-[40px] rounded-full mt-4 md:mt-12 transition-all duration-700 ${isCatching ? 'scale-125 opacity-40' : 'opacity-80 scale-100'}`} />
+      {/* Grounding Shadow (Imperial Court Floor) */}
+      <div className={`w-32 md:w-80 h-5 md:h-16 bg-black/80 blur-2xl md:blur-[60px] rounded-full mt-6 md:mt-16 transition-all duration-700 ${isCatching ? 'scale-150 opacity-50' : 'opacity-100 scale-100'}`} />
     </div>
   );
 };

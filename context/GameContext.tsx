@@ -26,6 +26,7 @@ interface GameContextType {
   buyCover: (coverId: string) => void;
   equipCover: (coverId: string) => void;
   equipJar: (jarId: string) => void;
+  markTooltipSeen: (id: string) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
